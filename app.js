@@ -51,7 +51,7 @@ app.get('/', (req, res) => {
       "6  → Nama hewan yang palindrome + panjangnya",
       "7  → Jumlah bilangan genap dari [15,18,3,9,6,2,12,14]",
       "8  → Cek anagram (?str1=...&str2=...)",
-      "9  → Format JSON case.json menjadi seperti expectation.json"
+      "9  → Format JSON case.json menjadi seperti expectation.json (Gunakan ?sort=asc atau desc untuk mengurutkan item di dalam code)"
     ]
   });
 });

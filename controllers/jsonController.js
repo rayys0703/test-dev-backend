@@ -4,6 +4,10 @@ function formatCaseJson(req, res) {
   const raw = JSON.parse(fs.readFileSync("assets/json/case.json", 'utf8'));
   const data = raw.data;
 
+  // Update menambahkan sort parameter
+  const sortParam = (req.query.sort || 'asc').toLowerCase();
+  const isDesc = sortParam === 'desc';
+
   let grandTotal = 0;
   const grouped = {};
 
@@ -31,10 +35,20 @@ function formatCaseJson(req, res) {
     total: grandTotal,
     data: Object.keys(grouped)
       .map(category => {
-        const sortedCodes = Object.keys(grouped[category].data).sort();
+        const codeObj = grouped[category].data;
+
+        Object.keys(codeObj).forEach(code => {
+          codeObj[code].data.sort((a, b) => {
+            return isDesc 
+              ? b.total - a.total          // desc: besar ke kecil
+              : a.total - b.total;         // asc: kecil ke besar
+          });
+        });
+
+        const sortedCodes = Object.keys(codeObj).sort();
         const sortedData = {};
         sortedCodes.forEach(code => {
-          sortedData[code] = grouped[category].data[code];
+          sortedData[code] = codeObj[code];
         });
 
         return {
